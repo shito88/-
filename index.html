@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="bn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>𝙿𝙰𝙸𝙳 𝚂𝙲𝚁𝙸𝙿𝚃 𝚅𝙸𝙳𝙴𝙾𝚂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --accent1: linear-gradient(90deg, #6b8cff, #b44bff);
+            --primary: #5b6cff;
+            --muted: #7b8794;
+            --success: #2ecc71;
+            --danger: #ff6b6b;
+            --glass: rgba(255, 255, 255, 0.9);
+            font-family: Inter, system-ui, Arial, sans-serif;
+        }
+
+        html, body { height: 100%; }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            box-sizing: border-box;
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #222;
+        }
+
+        /* Info Boxes */
+        .info-boxes {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 18px;
+            margin-top: 10px; /* Added slight top margin since header is gone */
+        }
+        
+        .info-box {
+            flex: 1;
+            padding: 10px;
+            border-radius: 12px;
+            background: var(--card);
+            box-shadow: 0 4px 12px rgba(20, 30, 60, 0.05);
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 80px;
+        }
+        
+        .info-box.highlight {
+            background: var(--accent1);
+            color: white;
+        }
+        
+        .info-box span {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+
+        /* Carousel / banner */
+        .carousel {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(20, 30, 60, 0.07);
+            margin-bottom: 18px;
+            background: #fff;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 450ms cubic-bezier(.2, .9, .2, 1);
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .slide img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .slide .meta {
+            flex: 1;
+        }
+
+        .slide h3 { margin: 0; font-size: 16px }
+
+        .slide p { margin: 4px 0 0; color: var(--muted); font-size: 13px }
+
+        .carousel .dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: white;
+            transform: scale(1.1)
+        }
+
+        /* Section title */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 18px 6px 8px;
+        }
+
+        /* Cards grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns for all devices by default */
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        @media(max-width: 480px){
+             .grid{
+                 grid-template-columns: repeat(2, 1fr);
+             }
+        }
+
+        @media(min-width:720px) {
+            .grid {
+                grid-template-columns: repeat(4, 1fr)
+            }
+        }
+        
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 6px 18px rgba(20, 30, 60, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .card .content { flex: 1; width: 100%; }
+
+        .card h4 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 11px;
+            display: none;
+        }
+
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #eef2ff, #f5f7ff);
+            height: 8px;
+            border-radius: 10px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #6b8cff, #b44bff);
+            width: 0%;
+            transition: width 300ms ease;
+        }
+
+        .progress-text {
+            font-size: 11px;
+            color: var(--muted);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .card .buttons {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 7px 9px;
+            border-radius: 8px;
+            border: 0;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(50, 60, 90, 0.04);
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .btn.primary {
+            background: linear-gradient(90deg, #6b8cff, #b44bff);
+            color: white
+        }
+
+        .btn.ghost {
+            background: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            color: #333
+        }
+
+        .btn.success {
+            background: var(--success);
+            color: white
+        }
+
+        .btn.warn {
+            background: var(--danger);
+            color: white
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+        }
+
+        .modal {
+            width: min(920px, 95%);
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 12px 40px rgba(10, 20, 40, 0.3);
+            max-height: 92vh;
+            overflow: auto;
+        }
+
+        .modal img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px
+        }
+
+        /* small helpers */
+        .muted {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        footer {
+            padding: 28px 6px 80px;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center
+        }
+
+        /* Floating Contact Button */
+        .contact-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(91, 108, 255, 0.4);
+            cursor: pointer;
+            z-index: 50;
+            font-size: 24px;
+        }
+
+    </style>
+</head>
+
+<body>
+    
+    <div class="info-boxes">
+        <div class="info-box highlight">
+            Unlock System
+        </div>
+        <div class="info-box">
+            File Script <span id="fileScriptCount">0</span>
+        </div>
+        <div class="info-box">
+            Downloaded <span id="downloadedCount">0</span>
+        </div>
+    </div>
+    
+    <p style="font-size: 13px; text-align: center; color: #555;">
+        এখানে 𝙿𝙰𝙸𝙳 𝙵𝚁𝙴𝙴 𝚂𝙲𝚁𝙸𝙿𝚃 চ্যানেল এর সকল ভিডিও এবং ফাইল পেয়ে জাবেন 
+ভিডিও বা ফাইল টি ডাউনলোড করতে ১০ টি এডস দেখতে হবে তার পর সকল ভিডিও বা ফাইল লিংক গুলো দেখতে পারবেন ধন্যবাদ সবাইকে     </p>
+
+    <div class="carousel" id="carousel">
+        <div class="slides" id="slides">
+            </div>
+        <div class="dots" id="dots"></div>
+    </div>
+
+    <div class="section-title">উপলব্ধ ফাইল</div>
+    <div class="grid" id="cardsGrid">
+        </div>
+
+    <footer>
+        ➤ 𝑫𝒆𝒔𝒊𝒈𝒏𝒆𝒅 & 𝑫𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒅 𝒃𝒚 𝑹𝑶𝑩𝑰𝑵 𝑩𝑶𝑺𝑺
+    </footer>
+
+    <a href="https://t.me/Robin_Boss_OP" target="_blank" class="contact-btn" title="Contact Me on Telegram">
+        <i class="fab fa-telegram-plane"></i>
+    </a>
+
+
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div id="modalContent"></div>
+            <div style="text-align:right;margin-top:8px">
+                <button class="btn ghost" id="modalClose">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="//libtl.com/sdk.js" data-zone="9837009" data-sdk="show_9837009"></script>
+
+    <script>
+        /******************************************
+         * Data model - cards + carousel banners
+         * * >> এখানে আপনার ফাইলের লিঙ্ক এবং ছবির লিঙ্ক পরিবর্তন করুন <<
+         ******************************************/
+        const DEFAULT_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+            `<svg xmlns='http://www.w3.org/2000/svg' width='640' height='360'><rect width='100%' height='100%' fill='#e6ecff'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='#6b6f85' font-size='22'>DEFAULT IMAGE</text></svg>`
+        );
+
+        const baseYoutubeUrl = 'https://youtube.com/@the-eduverse?si=mmhmqaUxv_odGWp0';
+
+        const appData = {
+            banners: [
+                { id: 'b1', title: 'Gemini pro', desc: '১০ টি এডস দেখলে আনলক করতে পারবেন', yt: baseYoutubeUrl, img: 'https://i.postimg.cc/R0k4CgHG/IMG-20251204-232109-348.jpg' },
+                
+            ],
+            files: [
+                // -----------------------------------------------------------------------------------
+                //  আপনার ২০টি ফাইলের ডাটা নিচে সেট করুন (requiredAds: 10)
+                // ----------------------------------------------------------------------------------
+                { 
+                    id: 'file1', 
+                    title: 'Gemini pro    30 day free trial', 
+                    desc: '(File) Watch 10 Ads to Unlock',
+                    img: 'https://i.postimg.cc/R0k4CgHG/IMG-20251204-232109-348.jpg', // <--- আপনার ইমেজ লিঙ্ক দিন
+                    requiredAds: 10, 
+                    downloadUrl: 'https://t.me/ARXSecureFile_Bot?start=5733045', // <--- আপনার ড্রাইভ লিঙ্ক দিন
+                    yt: baseYoutubeUrl 
+                },
+            ]
+        };
+
+        /******************************************
+         * LocalStorage helpers
+         ******************************************/
+        function getProgressKey(id) { return 'unlock_progress_' + id; }
+
+        function loadProgress(id) {
+            try {
+                const raw = localStorage.getItem(getProgressKey(id));
+                if (!raw) return { count: 0, unlocked: false };
+                return JSON.parse(raw);
+            } catch (e) { return { count: 0, unlocked: false }; }
+        }
+
+        function saveProgress(id, state) {
+            localStorage.setItem(getProgressKey(id), JSON.stringify(state));
+            window.dispatchEvent(new CustomEvent('progressUpdated', { detail: { id, state } }));
+            updateGlobalCounters();
+        }
+
+        /******************************************
+         * Global Counters
+         ******************************************/
+        function updateGlobalCounters() {
+            const totalFiles = appData.files.length;
+            let unlockedCount = 0;
+            appData.files.forEach(file => {
+                if (loadProgress(file.id).unlocked) {
+                    unlockedCount++;
+                }
+            });
+
+            const fileScriptCountEl = document.getElementById('fileScriptCount');
+            const downloadedCountEl = document.getElementById('downloadedCount');
+
+            if (fileScriptCountEl) fileScriptCountEl.textContent = totalFiles;
+            if (downloadedCountEl) downloadedCountEl.textContent = unlockedCount;
+        }
+
+        /******************************************
+         * Build carousel & cards
+         ******************************************/
+        const slidesEl = document.getElementById('slides');
+        const dotsEl = document.getElementById('dots');
+        let carouselIndex = 0;
+        let carouselTimer = null;
+
+        function buildCarousel() {
+            slidesEl.innerHTML = '';
+            dotsEl.innerHTML = '';
+            appData.banners.forEach((b, i) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.innerHTML = `
+                    <img src="${b.img || DEFAULT_IMG}" alt="${escapeHtml(b.title)}" data-id="${b.id}" />
+                    <div class="meta">
+                        <h3>${escapeHtml(b.title)}</h3>
+                        <p>${escapeHtml(b.desc)}</p>
+                        <div style="margin-top:8px">
+                            <button class="btn primary" data-action="watchBanner" data-yt="${b.yt}" data-id="${b.id}">Watch Video</button>
+                            <button class="btn ghost" data-action="viewBanner" data-img="${b.img||DEFAULT_IMG}">Preview</button>
+                        </div>
+                    </div>
+                `;
+                slidesEl.appendChild(slide);
+
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => { goToSlide(i); resetCarouselTimer(); });
+                dotsEl.appendChild(dot);
+            });
+        }
+
+        function goToSlide(i) {
+            carouselIndex = (i + appData.banners.length) % appData.banners.length;
+            slidesEl.style.transform = `translateX(-${carouselIndex * 100}%)`;
+            Array.from(dotsEl.children).forEach((d, idx) => d.classList.toggle('active', idx === carouselIndex));
+        }
+
+        function startCarousel() {
+            carouselTimer = setInterval(() => {
+                goToSlide(carouselIndex + 1);
+            }, 4500);
+        }
+
+        function resetCarouselTimer() {
+            if (carouselTimer) clearInterval(carouselTimer);
+            startCarousel();
+        }
+
+        // Cards
+        const cardsGrid = document.getElementById('cardsGrid');
+
+        function buildCards(filterTerm = '') {
+            cardsGrid.innerHTML = '';
+            const files = appData.files.filter(f => {
+                if (!filterTerm) return true;
+                return (f.title + ' ' + f.desc).toLowerCase().includes(filterTerm.toLowerCase());
+            });
+            files.forEach(file => {
+                const state = loadProgress(file.id);
+                const isUnlocked = !!state.unlocked;
+                const count = state.count || 0;
+                const percent = file.requiredAds > 0 ? Math.min(100, Math.round((count / file.requiredAds) * 100)) : 100;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${file.img || DEFAULT_IMG}" alt="${escapeHtml(file.title)}" data-img="${file.img||DEFAULT_IMG}" />
+                    <div class="content">
+                        <h4>${escapeHtml(file.title)}</h4>
+                        <p>${escapeHtml(file.desc)}</p>
+
+                        <div class="progress-row">
+                            <div class="progress-bar" aria-hidden="true">
+                                <div class="progress-fill" style="width:${percent}%"></div>
+                            </div>
+                            <div class="progress-text">${count}/${file.requiredAds}</div>
+                        </div>
+
+                        <div class="buttons">
+                            <button class="btn primary" data-action="openAd" data-id="${file.id}">আনলক করুন</button>
+                            <button class="btn ${isUnlocked ? 'success' : 'primary'}" data-action="download" data-id="${file.id}" ${isUnlocked ? '' : 'disabled'}>Download Script</button>
+                            
+                        </div>
+                    </div>
+                `;
+                // attach events
+                card.querySelectorAll('[data-action]').forEach(btn => {
+                    btn.addEventListener('click', cardButtonHandler);
+                });
+                // img preview on click
+                card.querySelector('img').addEventListener('click', (e) => openImageModal(e.target.dataset.img));
+
+                cardsGrid.appendChild(card);
+            });
+        }
+
+        /******************************************
+         * Button handlers
+         ******************************************/
+        function cardButtonHandler(e) {
+            const el = e.currentTarget;
+            const action = el.dataset.action;
+            const id = el.dataset.id;
+            const file = appData.files.find(f => f.id === id);
+
+            if (action === 'openAd') {
+                openAdFor(id);
+            } else if (action === 'download') {
+                const state = loadProgress(id);
+                if (file && state.unlocked) {
+                    window.open(file.downloadUrl, '_blank'); // ড্রাইভ লিঙ্ক ওপেন হবে
+                } else if (file) {
+                     alert(`অনুগ্রহ করে ${file.requiredAds} টি অ্যাড দেখে ফাইলটি আনলক করুন।`);
+                }
+            } else if (action === 'watchBanner') {
+                openYouTube(el.dataset.yt);
+            } else if (action === 'viewBanner') {
+                openImageModal(el.dataset.img);
+            }
+        }
+
+        /******************************************
+         * Ad integration (with 10-second timer)
+         ******************************************/
+        const AD_MIN_TIME_SEC = 10;
+        let adOverlay = null;
+        let adTimerInterval = null;
+
+        function openAdFor(fileId) {
+            const file = appData.files.find(f => f.id === fileId);
+            if (!file) return alert('File not found');
+
+            const state = loadProgress(fileId);
+            if(state.unlocked) return alert('এই ফাইলটি ইতিমধ্যেই আনলক করা আছে।');
+
+            showAdOverlay(fileId);
+
+            const sdkFn = window.show_9837009 || window.show_9837009 === 0 ? window.show_9837009 : null;
+
+            if (typeof sdkFn === 'function') {
+                try {
+                    sdkFn();
+                } catch (err) {
+                    console.warn('SDK call error', err);
+                }
+            }
+        }
+
+        function showAdOverlay(fileId) {
+            if (adOverlay) return;
+            let timeLeft = AD_MIN_TIME_SEC;
+            let timerFinished = false;
+
+            adOverlay = document.createElement('div');
+            adOverlay.style.position = 'fixed';
+            adOverlay.style.inset = 0;
+            adOverlay.style.background = 'rgba(0,0,0,0.6)';
+            adOverlay.style.display = 'flex';
+            adOverlay.style.alignItems = 'center';
+            adOverlay.style.justifyContent = 'center';
+            adOverlay.style.zIndex = 9999;
+            adOverlay.innerHTML = `
+                <div style="width:min(520px,92%);background:#fff;padding:18px;border-radius:12px;text-align:center;">
+                    <div style="font-weight:700;margin-bottom:8px">বিজ্ঞাপন দেখানো হচ্ছে...</div>
+                    <div id="adTimer" style="font-size:13px;color:#d9534f;font-weight:600;margin-bottom:12px">অনুগ্রহ করে অপেক্ষা করুন ${timeLeft} সেকেন্ড</div>
+                    <div style="display:flex;gap:8px;justify-content:center">
+                        <button id="closeAdBtn" class="btn warn">Close Ad</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(adOverlay);
+            
+            const timerSpan = adOverlay.querySelector('#adTimer');
+            const closeAdBtn = adOverlay.querySelector('#closeAdBtn');
+
+            closeAdBtn.addEventListener('click', () => {
+                hideAdOverlay();
+                if (timerFinished) {
+                    // Min time met, count the ad view.
+                    incrementAdCount(fileId, 1, 'min-time-confirmed');
+                } else {
+                    // Closed early, do not count
+                    alert('বিজ্ঞাপনটি ১০ সেকেন্ড না দেখলে কাউন্ট হবে না। অনুগ্রহ করে আবার চেষ্টা করুন।');
+                }
+            });
+
+            // Start timer
+            adTimerInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(adTimerInterval);
+                    timerFinished = true;
+                    timerSpan.textContent = 'Ad finished. Now click "Close Ad (Confirm)" to confirm count.';
+                    timerSpan.style.color = 'var(--success)';
+                    closeAdBtn.textContent = 'Close Ad (Confirm)';
+                } else {
+                    timerSpan.textContent = `অনুগ্রহ করে অপেক্ষা করুন ${timeLeft} সেকেন্ড`;
+                }
+            }, 1000);
+        }
+
+        function hideAdOverlay() {
+            if (adTimerInterval) clearInterval(adTimerInterval);
+            if (adOverlay) { adOverlay.remove(); adOverlay = null; }
+        }
+
+        function incrementAdCount(fileId, increment = 1, reason = 'manual') {
+            const file = appData.files.find(f => f.id === fileId);
+            if (!file) return;
+            const state = loadProgress(fileId);
+            state.count = (state.count || 0) + increment;
+
+            if (state.count >= file.requiredAds) {
+                state.unlocked = true;
+                state.count = file.requiredAds; // cap
+                alert('অভিনন্দন! ফাইলটি আনলক করা হয়েছে। Download Script বাটন এখন সক্রিয়।');
+            }
+            saveProgress(fileId, state);
+            updateCardUI(fileId, state);
+        }
+
+
+        /******************************************
+         * UI updates
+         ******************************************/
+        function updateCardUI(fileId, state) {
+            // find card in DOM and update progress & download button enabled
+            const btns = cardsGrid.querySelectorAll('[data-id="' + fileId + '"]');
+            btns.forEach(el => {
+                // el could be different buttons; find the nearest card and update
+                const card = el.closest('.card');
+                if (!card) return;
+                const file = appData.files.find(f => f.id === fileId);
+                const count = state.count || 0;
+                const percent = file.requiredAds > 0 ? Math.min(100, Math.round((count / file.requiredAds) * 100)) : 100;
+
+                const progressFill = card.querySelector('.progress-fill');
+                if (progressFill) progressFill.style.width = percent + '%';
+                const text = card.querySelector('.progress-text');
+                if (text) text.textContent = `${count}/${file.requiredAds}`;
+                
+                const downloadBtn = card.querySelector('[data-action="download"]');
+                if (downloadBtn) {
+                    if (state.unlocked) {
+                        downloadBtn.removeAttribute('disabled');
+                        downloadBtn.classList.remove('primary');
+                        downloadBtn.classList.add('success');
+                        downloadBtn.textContent = 'Download Script';
+                    } else {
+                        downloadBtn.setAttribute('disabled', '');
+                        downloadBtn.classList.remove('success');
+                        downloadBtn.classList.add('primary');
+                        downloadBtn.textContent = 'Download Script';
+                    }
+                }
+            });
+        }
+
+        // Listen for progress updates globally (used by saveProgress)
+        window.addEventListener('progressUpdated', e => {
+            updateCardUI(e.detail.id, e.detail.state);
+        });
+
+        /******************************************
+         * Modal helpers
+         ******************************************/
+        const modalBackdrop = document.getElementById('modalBackdrop');
+        const modalContent = document.getElementById('modalContent');
+        const modalClose = document.getElementById('modalClose');
+        modalClose.addEventListener('click', closeModal);
+        modalBackdrop.addEventListener('click', (ev) => {
+            if (ev.target === modalBackdrop) closeModal();
+        });
+
+        function openImageModal(src) {
+            modalContent.innerHTML = `<img src="${src}" alt="Preview" />`;
+            openModal();
+        }
+
+        function openYouTube(ytlink) {
+            // open youtube in modal iframe
+            let vid = '';
+            try {
+                const url = new URL(ytlink);
+                if (url.hostname.includes('youtube') && url.searchParams.get('v')) {
+                    vid = url.searchParams.get('v');
+                } else if(url.hostname.includes('youtu.be')){
+                    vid = url.pathname.slice(1);
+                }
+            } catch (e) {}
+
+            if (vid) {
+                modalContent.innerHTML = `<div style="position:relative;padding-top:56.25%"><iframe src="https://www.youtube.com/embed/${vid}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border-radius:8px"></iframe></div>`;
+                openModal();
+            } else {
+                // fallback open in new tab
+                window.open(ytlink, '_blank');
+            }
+        }
+
+        function openModal() { modalBackdrop.style.display = 'flex'; }
+
+        function closeModal() { modalBackdrop.style.display = 'none'; modalContent.innerHTML = ''; }
+
+        /******************************************
+         * Utility
+         ******************************************/
+        function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
+
+        /******************************************
+         * Init
+         ******************************************/
+        function init() {
+            buildCarousel();
+            buildCards();
+            startCarousel();
+            updateGlobalCounters();
+
+            // ensure stored progress UI reflects current state
+            appData.files.forEach(f => updateCardUI(f.id, loadProgress(f.id)));
+        }
+
+        // run
+        init();
+    </script>
+</body>
+
+</html>
